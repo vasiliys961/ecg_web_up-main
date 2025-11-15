@@ -1,0 +1,55 @@
+<!-- templates/results.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты анализа ЭКГ</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f7fa; }
+        .container { max-width: 800px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        h2 { color: #555; }
+        p { text-align: center; color: #666; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        tr:hover { background-color: #f5f5f5; }
+        .probability { text-align: right; }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #4CAF50; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Результаты анализа ЭКГ</h1>
+        <h2>Файл: {{ filename }}</h2>
+        <p>Ниже представлены вероятности диагнозов, предсказанные моделью для загруженной ЭКГ.</p>
+
+        {% if results %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Код диагноза</th>
+                        <th>Диагноз (RU)</th>
+                        <th>Вероятность</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.code }}</td>
+                        <td>{{ result.ru_name }}</td>
+                        <td class="probability">{{ "%.4f"|format(result.probability) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>❌ Похоже, результаты анализа пусты или не были переданы.</p>
+        {% endif %}
+
+        <a class="back-link" href="{{ url_for('index') }}">← Назад на главную</a>
+    </div>
+</body>
+</html>

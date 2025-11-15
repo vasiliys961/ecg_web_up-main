@@ -1,0 +1,58 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Анализ ЭКГ</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f7fa; }
+        .container { max-width: 600px; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        p { text-align: center; color: #666; }
+        form { margin-top: 20px; text-align: center; }
+        input[type="file"] { margin: 10px 0; }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover { background-color: #45a049; }
+        .flash-messages {
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Анализ ЭКГ</h1>
+        <p>Пожалуйста, загрузите файл ЭКГ в формате CSV (ecgdeli_features).</p>
+
+        <!-- Отображение flash-сообщений -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-messages">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- ВАЖНО: Добавлен атрибут action -->
+        <form method="post" action="/upload" enctype="multipart/form-data">
+            <input type="file" name="ecg_file" accept=".csv" required>
+            <br>
+            <input type="submit" value="Анализировать">
+        </form>
+    </div>
+</body>
+</html>
